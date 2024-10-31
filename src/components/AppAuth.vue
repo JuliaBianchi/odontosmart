@@ -23,41 +23,40 @@
         <!-- Add margin if you want to see some of the overlay behind the modal-->
         <div class="py-4 text-left px-6">
           <!--Title-->
+          <div class="flex justify-between items-center pb-4">
+            <p class="text-2xl font-bold">Sua conta</p>
 
-          <div class="flex justify-end items-center pb-4">
-          
             <!-- Modal Close Button -->
             <div
               class="modal-close cursor-pointer z-50"
               @click="modalVisibility = false"
             >
-              <img src="../assets/x (2).svg" alt="">
+             <img src="../assets/x (2).svg" alt="">
             </div>
-
           </div>
 
           <!-- Tabs -->
           <ul class="flex flex-wrap mb-4">
             <li class="flex-auto text-center">
               <a
-                class="block rounded py-3 px-4 transition font-bold"
+                class="block rounded py-3 px-4 transition"
                 href="#"
                 @click.prevent="tab = 'login'"
                 :class="{
-                  'hover:text-white text-white bg-[#03045e]': tab === 'login',
-                  'hover:text-[#03045e] ': tab === 'register',
+                  'hover:text-white text-white bg-blue-600': tab === 'login',
+                  'hover:text-blue-600': tab === 'register',
                 }"
                 >Login</a
               >
             </li>
             <li class="flex-auto text-center">
               <a
-                class="block rounded py-3 px-4 transition font-bold "
+                class="block rounded py-3 px-4 transition"
                 href="#"
                 @click.prevent="tab = 'register'"
                 :class="{
-                  'hover:text-white text-white bg-[#03045e]': tab === 'register',
-                  'hover:text-[#03045e]': tab === 'login',
+                  'hover:text-white text-white bg-blue-600': tab === 'register',
+                  'hover:text-blue-600': tab === 'login',
                 }"
                 >Cadastro</a
               >
@@ -68,7 +67,7 @@
           <form v-show="tab === 'login'">
             <!-- Email -->
             <div class="mb-3">
-              <label class="inline-block mb-2">E-mail</label>
+              <label class="inline-block mb-2">Email</label>
               <input
                 type="email"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -77,7 +76,7 @@
             </div>
             <!-- Password -->
             <div class="mb-3">
-              <label class="inline-block mb-2">Senha</label>
+              <label class="inline-block mb-2">Password</label>
               <input
                 type="password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
@@ -86,55 +85,66 @@
             </div>
             <button
               type="submit"
-              class="block w-full bg-blue-800 text-white py-1.5 px-3 rounded transition hover:bg-blue-900"
+              class="block w-full bg-blue-600 text-white py-1.5 px-3 rounded transition hover:bg-blue-700"
             >
               Entrar
             </button>
           </form>
           <!-- Registration Form -->
-          <vee-form v-show="tab === 'register'">
+          <vee-form
+            v-show="tab === 'register'"
+            :validation-schema="schema"
+            @submit="register"
+          >
             <!-- Name -->
             <div class="mb-3">
               <label class="inline-block mb-2">Nome</label>
-              <input
+              <vee-field
+                name="name"
                 type="text"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Digite seu nome"
               />
+              <ErrorMessage class="text-red-600" name="name" />
             </div>
+
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">E-mail</label>
-              <input
+              <vee-field
+                name="email"
                 type="email"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Digite seu e-mail"
               />
+              <ErrorMessage class="text-red-600" name="email" />
             </div>
-            
+
             <!-- Password -->
             <div class="mb-3">
-              <label class="inline-block mb-2">Senha</label>
-              <input
+              <label class="inline-block mb-2">Password</label>
+              <vee-field
+                name="password"
                 type="password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Digite uma senha"
+                placeholder="Defina uma senha"
               />
+              <ErrorMessage class="text-red-600" name="password" />
             </div>
-            <!-- Confirm Password -->
+
             <div class="mb-3">
-              <label class="inline-block mb-2">Confirmação de senha</label>
-              <input
+              <label class="inline-block mb-2">Confirm Password</label>
+              <vee-field
                 type="password"
+                name="confirm_password"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Confirme sua senha"
+                placeholder="Repita sua senha"
               />
+              <ErrorMessage class="text-red-600" name="confirm_password" />
             </div>
-            
-           
             <button
               type="submit"
-              class="block w-full bg-blue-800 text-white  py-1.5 px-3 rounded transition hover:bg-blue-900"
+              class="block w-full bg-blue-600 text-white py-1.5 px-3 rounded transition hover:bg-blue-700"
             >
               Cadastrar
             </button>
@@ -146,21 +156,32 @@
 </template>
 
 <script>
-import { mapState, mapWritableState } from "pinia";
-import useModalStore from "@/stores/modal";
+import { mapState, mapWritableState } from 'pinia'
+import useModalStore from '@/stores/modal'
 
 export default {
-  name: "AppAuth",
+  name: 'AppAuth',
   data() {
     return {
-      tab: "login",
-    };
+      tab: 'login',
+      schema: {
+        name: 'required|min:3|max:100|alpha_spaces',
+        email: 'required|min:3|max:100|email',
+        password: 'required|min:3|max:100',
+        confirmPassword: 'confirmed:@password',
+      },
+    }
   },
   computed: {
-    ...mapState(useModalStore, ["hiddenClass"]),
+    ...mapState(useModalStore, ['hiddenClass']),
     ...mapWritableState(useModalStore, {
-      modalVisibility: "isOpen",
+      modalVisibility: 'isOpen',
     }),
   },
-};
+  methods: {
+    register(values) {
+      console.log(values)
+    },
+  },
+}
 </script>
