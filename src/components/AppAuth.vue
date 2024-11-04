@@ -63,92 +63,10 @@
             </li>
           </ul>
 
-          <!-- Login Form -->
-          <form v-show="tab === 'login'">
-            <!-- Email -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Email</label>
-              <input
-                type="email"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Digite seu e-mail"
-              />
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Password</label>
-              <input
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Digite sua senha"
-              />
-            </div>
-            <button
-              type="submit"
-              class="block w-full bg-blue-600 text-white py-1.5 px-3 rounded transition hover:bg-blue-700"
-            >
-              Entrar
-            </button>
-          </form>
-          <!-- Registration Form -->
-          <vee-form
-            v-show="tab === 'register'"
-            :validation-schema="schema"
-            @submit="register"
-          >
-            <!-- Name -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Nome</label>
-              <vee-field
-                name="name"
-                type="text"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Digite seu nome"
-              />
-              <ErrorMessage class="text-red-600" name="name" />
-            </div>
 
-            <!-- Email -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">E-mail</label>
-              <vee-field
-                name="email"
-                type="email"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Digite seu e-mail"
-              />
-              <ErrorMessage class="text-red-600" name="email" />
-            </div>
-
-            <!-- Password -->
-            <div class="mb-3">
-              <label class="inline-block mb-2">Password</label>
-              <vee-field
-                name="password"
-                type="password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Defina uma senha"
-              />
-              <ErrorMessage class="text-red-600" name="password" />
-            </div>
-
-            <div class="mb-3">
-              <label class="inline-block mb-2">Confirm Password</label>
-              <vee-field
-                type="password"
-                name="confirm_password"
-                class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-                placeholder="Repita sua senha"
-              />
-              <ErrorMessage class="text-red-600" name="confirm_password" />
-            </div>
-            <button
-              type="submit"
-              class="block w-full bg-blue-600 text-white py-1.5 px-3 rounded transition hover:bg-blue-700"
-            >
-              Cadastrar
-            </button>
-          </vee-form>
+          <LoginForm v-if="tab === 'login'" />
+          <RegisterForm v-else />
+          
         </div>
       </div>
     </div>
@@ -158,18 +76,18 @@
 <script>
 import { mapState, mapWritableState } from 'pinia'
 import useModalStore from '@/stores/modal'
+import LoginForm from './LoginForm.vue';
+import RegisterForm from './RegisterForm.vue';
 
 export default {
   name: 'AppAuth',
+  components: {
+    LoginForm,
+    RegisterForm
+  },
   data() {
     return {
-      tab: 'login',
-      schema: {
-        name: 'required|min:3|max:100|alpha_spaces',
-        email: 'required|min:3|max:100|email',
-        password: 'required|min:3|max:100',
-        confirmPassword: 'confirmed:@password',
-      },
+      tab: 'login'
     }
   },
   computed: {
@@ -179,9 +97,7 @@ export default {
     }),
   },
   methods: {
-    register(values) {
-      console.log(values)
-    },
+  
   },
 }
 </script>

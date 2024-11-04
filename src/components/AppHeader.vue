@@ -1,11 +1,12 @@
 <script>
 import { mapStores } from 'pinia'
 import useModalStore from '@/stores/modal'
+import useUserStore from '@/stores/user'
 
 export default {
   name: 'AppHeader',
   computed: {
-    ...mapStores(useModalStore),
+    ...mapStores(useModalStore, useUserStore),
   },
   methods: {
     scrollToSection(sectionId) {
@@ -82,11 +83,29 @@ export default {
       class="flex gap-3 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
     >
       <a
+        v-if="!userStore.userLoggedIn"
         class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"
         href="#"
         @click.prevent="toggleAuthModal"
         >LOGIN / REGISTRO</a
       >
+
+      <template v-else>
+        <button
+          class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"
+          href="#"
+        >
+          Manage
+        </button>
+
+        <button
+          class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"
+          href="#"
+          @click.prevent="userStore.signOut"
+        >
+          Logout
+        </button>
+      </template>
     </div>
   </nav>
 </template>

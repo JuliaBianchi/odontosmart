@@ -13,6 +13,8 @@ import {
   confirmed,
   min_value as minVal,
   max_value as maxVal,
+
+
 } from '@vee-validate/rules'
 
 export default {
@@ -29,5 +31,6 @@ export default {
     defineRule('confirmed', confirmed)
     defineRule('min_value', minVal)
     defineRule('max_value', maxVal)
+    defineRule('passwords_mismatch', confirmed)
   },
 }
