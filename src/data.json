@@ -1,0 +1,58 @@
+{
+    "consultorios":[
+        {
+            "id": "1",
+            "title": "Sala Odontológica",
+            "description": "Sala com equipo, ar condicionado, sala de esterilização, Raio X, impressora 3D, fotopolimerizador, incluso água, luz internet, limpeza.",
+            "image": "1.jpg",
+            "cidade": "Passo Fundo",
+            "estado": "RS",
+            "valor": 350.00
+          },
+          {
+            "id": "2",
+            "title": "Sala Odontológica",
+            "description": "Sala com equipo, ar condicionado, sala de esterilização, Raio X, impressora 3D, fotopolimerizador, incluso água, luz, internet, limpeza.",
+            "image": "2.jpg",
+            "cidade": "Porto Alegre",
+            "estado": "RS",
+            "valor": 300.00
+          },
+          {
+            "id": "3",
+            "title": "Consultório Odontológico Alugar",
+            "description": "Sala com equipo, ar condicionado, sala de esterilização, Raio X, impressora 3D, incluso água, luz, internet, limpeza.",
+            "image": "3.jpg",
+            "cidade": "Passo Fundo",
+            "estado": "RS",
+            "valor": 250.00
+          },
+          {
+            "id": "4",
+            "title": "Sala Odontológica",
+            "description": "Sala com equipo, ar condicionado, sala de esterilização, Raio X, incluso água, luz, internet, limpeza.",
+            "image": "4.jpg",
+            "cidade": "Porto Alegre",
+            "estado": "RS",
+            "valor": 200.00
+          },
+          {
+            "id": "5",
+            "title": "Consultório Odontológico Centro",
+            "description": "Sala com equipo odontológico básico e sala de esterilização, incluso água, luz, internet, limpeza.",
+            "image": "5.jpg",
+            "cidade": "Passo Fundo",
+            "estado": "RS",
+            "valor": 150.00
+          },
+          {
+            "id": "6",
+            "title": "Consultório Odontológico Completo",
+            "description": "Sala com equipo odontológico básico e sala de esterilização, incluso água, luz, internet, limpeza.",
+            "image": "6.jpg",
+            "cidade": "Porto Alegre",
+            "estado": "RS",
+            "valor": 100.00
+          }
+    ]
+}

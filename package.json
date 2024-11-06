@@ -15,8 +15,12 @@
   },
   "dependencies": {
     "@vee-validate/rules": "^4.14.6",
-    "firebase": "12.6.1",
+    "@vuepic/vue-datepicker": "^10.0.0",
+    "firebase": "^8.10.1",
+    "flowbite": "^2.5.2",
+    "mitt": "^3.0.1",
     "pinia": "^2.2.4",
+    "preline": "^2.5.1",
     "vee-validate": "^4.14.6",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
