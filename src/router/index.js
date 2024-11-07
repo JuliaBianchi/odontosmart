@@ -6,6 +6,7 @@ import ContactView from '@/views/ContactView.vue'
 import HomeView from '@/views/HomeView.vue'
 import AppView from '@/views/AppView.vue'
 import CardDetail from '@/views/CardDetail.vue'
+import OrdersView from '@/views/OrdersView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/consultorios/:id',
       name: 'consultorio.detalhes',
       component: CardDetail,
+    },
+    {
+      path: '/pedidos',
+      name: 'pedidos',
+      component: OrdersView,
     },
   ],
 })

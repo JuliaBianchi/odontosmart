@@ -1,8 +1,7 @@
 <script>
 import AppHeader from '@/components/AppHeader.vue'
 import DatePicker from '@/components/DatePickerComponent.vue'
-
-
+import { auth, ordersCollection } from '@/includes/firebase'
 import consultorio1 from '@/assets/img/1.jpg'
 import consultorio2 from '@/assets/img/2.jpg'
 import consultorio3 from '@/assets/img/3.jpg'
@@ -12,27 +11,57 @@ import consultorio6 from '@/assets/img/6.jpg'
 import TimePicker from '@/components/TimePicker.vue'
 import ContactView from './ContactView.vue'
 
+import uuid from "vue-uuid";
+
 export default {
   name: 'CardDetails',
   components: {
     AppHeader,
     DatePicker,
     TimePicker,
-    ContactView
+    ContactView,
   },
   data() {
     return {
       selectedDate: '',
       selectedTime: '',
       item: {},
+      orders: [],
+      order: {
+        item: '',
+        dia: '',
+        horario: '',
+      },
     }
   },
   mounted() {
     const itemId = this.$route.params.id
     this.buscarItem(itemId)
   },
-
   methods: {
+    updateInputDate(event) {
+      this.selectedDate = event.target.value
+    },
+    updateInputTime(event) {
+      this.selectedTime = event.target.value
+    },
+    async addToCart() {
+      const order = {
+        display_name: auth.currentUser.email,
+        item: this.item,
+        data: this.selectedDate,
+        hora: this.selectedTime,
+      }
+
+      try {
+        await ordersCollection.add(order)
+        alert('Item adicionado ao carrinho')
+      } catch (error) {
+        alert('Ops, ocorreu um erro.')
+        console.log(error)
+      }
+
+    },
     buscarItem(id) {
       const itens = [
         {
@@ -43,7 +72,7 @@ export default {
           imagePath: consultorio1,
           cidade: 'Passo Fundo',
           estado: 'RS',
-          valor: "350,00",
+          valor: '350,00',
           contato: '+ 55 54 99999-9999',
         },
         {
@@ -54,7 +83,7 @@ export default {
           imagePath: consultorio2,
           cidade: 'Porto Alegre',
           estado: 'RS',
-          valor: "300,00",
+          valor: '300,00',
           contato: '+ 55 54 99999-9999',
         },
         {
@@ -65,7 +94,7 @@ export default {
           imagePath: consultorio3,
           cidade: 'Passo Fundo',
           estado: 'RS',
-          valor: "250,00",
+          valor: '250,00',
           contato: '+ 55 54 99999-9999',
         },
         {
@@ -76,7 +105,7 @@ export default {
           imagePath: consultorio4,
           cidade: 'Porto Alegre',
           estado: 'RS',
-          valor: "200,00",
+          valor: '200,00',
           contato: '+ 55 54 99999-9999',
         },
         {
@@ -87,7 +116,7 @@ export default {
           imagePath: consultorio5,
           cidade: 'Passo Fundo',
           estado: 'RS',
-          valor: "150,00",
+          valor: '150,00',
           contato: '+ 55 54 99999-9999',
         },
         {
@@ -98,7 +127,7 @@ export default {
           imagePath: consultorio6,
           cidade: 'Porto Alegre',
           estado: 'RS',
-          valor: "100,00",
+          valor: '100,00',
           contato: '+ 55 54 99999-9999',
         },
       ]
@@ -136,24 +165,29 @@ export default {
           >
         </p>
         <p class="text-lg"><strong>Contato:</strong> {{ item.contato }}</p>
+      </section>
 
-    </section>
+      <div class="flex flex-col justify-center p-12 gap-10">
+        <DatePicker
+          class="pb-5"
+          v-model="selectedDate"
+          @input.prevent="updateInputDate"
+        />
+        <TimePicker
+          v-model="selectedTime"
+          :value="selectedTime"
+          @input.prevent="updateInputTime"
+        />
 
-    <div class="flex flex-col justify-center p-12 gap-10">
-          <DatePicker class="pb-5" v-model="selectedDate" />
-          <TimePicker v-model="selectedTime" />
-
-          <button
-          class="flex text-white bg-blue-800  hover:bg-blue-900 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-14 py-3 text-center"
-        
-          >Adicionar<img class="pl-2" src="/src/assets/plus.svg" alt="">
-        
+        <button
+          @click="addToCart"
+          class="flex text-white bg-blue-800 hover:bg-blue-900 font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-14 py-3 text-center"
+        >
+          Adicionar<img class="pl-2" src="/src/assets/plus.svg" alt="" />
         </button>
-
-
-        </div>
+      </div>
     </div>
   </container>
 
-  <ContactView/>
+  <ContactView />
 </template>

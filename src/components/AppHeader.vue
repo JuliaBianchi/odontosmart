@@ -4,6 +4,8 @@ import useModalStore from '@/stores/modal'
 import useUserStore from '@/stores/user'
 import useCartStore from '@/stores/cart'
 
+import { database } from '@/includes/firebase'
+
 export default {
   name: 'AppHeader',
   computed: {
@@ -21,11 +23,26 @@ export default {
       console.log(this.modalStore.isOpen)
     },
   },
-  data(){
+  data() {
     return {
-      cartCount: 0
+      cartCount: 0,
     }
-  }
+  },
+  async created() {
+    try {
+      database
+        .collection('pedidos')
+        .get()
+        .then(querySnapshot => {
+          const documents = querySnapshot.docs.map(doc => doc.data())
+
+          this.cartCount = documents.length
+          
+        })
+    } catch (error) {
+      console.error('Erro ao buscar a coleção: ', error)
+    }
+  },
 }
 </script>
 
@@ -99,12 +116,15 @@ export default {
       >
 
       <template v-else>
-        <div class="relative pb-3 pr-4">
+        <router-link  
+         to="/pedidos"
+        class="relative pb-3 pr-4 hover:bg-slate-200"
+        >
           <div class="t-0 absolute left-3">
             <p
               class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white"
             >
-            {{ cartCount }}
+              {{ cartCount }}
             </p>
           </div>
           <svg
@@ -121,22 +141,27 @@ export default {
               d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
             />
           </svg>
-        </div>
-
-        <router-link
-          to="/consultorios"
-          class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"
-          >Consultórios</router-link
-        >
-
-        <router-link
-          to="/"
-          class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"
-          href="#"
-          @click.prevent="userStore.signOut"
-        >
-          Logout
         </router-link>
+
+
+        <div class="flex items-center">
+
+          <router-link
+            to="/consultorios"
+            class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"
+            >Consultórios</router-link
+          >
+
+          <router-link
+            to="/"
+            class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 flex gap-3"
+            href="#"
+            @click.prevent="userStore.signOut"
+          >
+            Logout
+            <img class="w-5" src="/src/assets/log-out.svg" alt="" />
+          </router-link>
+        </div>
       </template>
     </div>
   </nav>

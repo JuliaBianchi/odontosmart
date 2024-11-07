@@ -10,7 +10,8 @@ import consultorio6 from '@/assets/img/6.jpg'
 
 import AppCard from '@/components/AppCard.vue'
 
-import sourceDate from '@/data.json'
+import sourceData from '@/data.json'
+console.log(sourceData)
 
 export default {
   name: 'AppView',
@@ -21,7 +22,7 @@ export default {
   data() {
     return {
       search: '',
-      consultorioss: sourceDate.consultorios,
+      consultorioss: sourceData.consultorios,
       consultorios: [
         {
           id: 1,
