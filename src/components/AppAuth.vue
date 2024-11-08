@@ -1,3 +1,34 @@
+
+<script>
+import { mapState, mapWritableState } from 'pinia'
+import useModalStore from '@/stores/modal'
+import LoginForm from './LoginForm.vue';
+import RegisterForm from './RegisterForm.vue';
+
+export default {
+  name: 'AppAuth',
+  components: {
+    LoginForm,
+    RegisterForm
+  },
+  data() {
+    return {
+      tab: 'login'
+    }
+  },
+  computed: {
+    ...mapState(useModalStore, ['hiddenClass']),
+    ...mapWritableState(useModalStore, {
+      modalVisibility: 'isOpen',
+    }),
+  },
+  methods: {
+  
+  },
+}
+</script>
+
+
 <template>
   <!-- Auth Modal -->
   <div
@@ -72,32 +103,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { mapState, mapWritableState } from 'pinia'
-import useModalStore from '@/stores/modal'
-import LoginForm from './LoginForm.vue';
-import RegisterForm from './RegisterForm.vue';
-
-export default {
-  name: 'AppAuth',
-  components: {
-    LoginForm,
-    RegisterForm
-  },
-  data() {
-    return {
-      tab: 'login'
-    }
-  },
-  computed: {
-    ...mapState(useModalStore, ['hiddenClass']),
-    ...mapWritableState(useModalStore, {
-      modalVisibility: 'isOpen',
-    }),
-  },
-  methods: {
-  
-  },
-}
-</script>

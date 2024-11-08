@@ -11,6 +11,8 @@ export default {
   data() {
     return {
       pedidos: [],
+      valores: [],
+      valorTotal: 0.0,
     }
   },
   async created() {
@@ -23,30 +25,48 @@ export default {
 
           this.pedidos = documents
 
-          console.log(this.pedidos)
+          for (let index = 0; index < this.pedidos.length; index++) {
+            this.valores.push(parseFloat(this.pedidos[index].item.valor))
+            this.total = this.valores.reduce(
+              (acumulador, valorAtual) => acumulador + valorAtual,
+              0,
+            )
+
+            this.valorTotal = Intl.NumberFormat('pt-BR', {
+              style: 'currency',
+              currency: 'BRL',
+            }).format(this.total)
+          }
         })
     } catch (error) {
       console.error('Erro ao buscar a coleção: ', error)
     }
+  },
+  methods: {
+    formatarParaMoedaBrasileira(valor) {
+      return new Intl.NumberFormat('pt-BR', {
+        style: 'currency',
+        currency: 'BRL',
+      }).format(valor)
+    },
   },
 }
 </script>
 
 <template>
   <AppHeader />
-  <div class="h-36"></div>
 
-  <div class="h-screen flex flex-col items-center justify-center pt-[5rem] ">
+  <div class="h-screen flex flex-col items-center justify-center pt-[5rem]">
     <h1 class="text-4xl mb-10">Carrinho de reservas</h1>
 
     <div
-      class="pt-10 w-full max-w-2xl "
+      class="pt-10 w-full max-w-2xl"
       v-for="(pedido, index) in pedidos"
       :key="index"
     >
       <hr class="dashed w-full" />
 
-      <div class="flex justify-center gap-16 pt-8 flex-row w-full ">
+      <div class="flex justify-center gap-16 pt-8 flex-row w-full">
         <img class="w-[10rem] rounded-md" :src="pedido.item.imagePath" />
 
         <div class="text-left">
@@ -63,7 +83,9 @@ export default {
     </div>
 
     <div class="pb-10 mt-10 flex flex-col items-center">
-      <h1 class="text-2xl mb-4"><strong>Total: </strong> R$ 550,00</h1>
+      <h1 class="text-2xl mb-4">
+        <strong>Total: </strong>{{ valorTotal }}
+      </h1>
 
       <button
         @click="addToCart"

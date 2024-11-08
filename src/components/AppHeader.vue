@@ -22,10 +22,11 @@ export default {
       this.modalStore.isOpen = !this.modalStore.isOpen
       console.log(this.modalStore.isOpen)
     },
+
   },
   data() {
     return {
-      cartCount: 0,
+      count: 0,
     }
   },
   async created() {
@@ -36,8 +37,7 @@ export default {
         .then(querySnapshot => {
           const documents = querySnapshot.docs.map(doc => doc.data())
 
-          this.cartCount = documents.length
-          
+          this.count = documents.length
         })
     } catch (error) {
       console.error('Erro ao buscar a coleção: ', error)
@@ -48,7 +48,7 @@ export default {
 
 <template>
   <nav
-    class="fixed flex justify-between items-center pl-20 pr-20 pt-5 pb-2 bg-white w-full"
+    class="fixed flex justify-between items-center pl-20 pr-20 pt-5 bg-white w-full"
   >
     <a href="#" class="flex gap-3">
       <img
@@ -116,15 +116,15 @@ export default {
       >
 
       <template v-else>
-        <router-link  
-         to="/pedidos"
-        class="relative pb-3 pr-4 hover:bg-slate-200"
+        <router-link
+          to="/pedidos"
+          class="relative pb-3 pr-4 hover:bg-slate-200"
         >
           <div class="t-0 absolute left-3">
             <p
               class="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-3 text-xs text-white"
             >
-              {{ cartCount }}
+              {{ count }}
             </p>
           </div>
           <svg
@@ -143,9 +143,7 @@ export default {
           </svg>
         </router-link>
 
-
         <div class="flex items-center">
-
           <router-link
             to="/consultorios"
             class="text-[#03045e] hover:text-[#023e8a] hover:bg-[#e9ecef] font-bold focus:ring-4 focus:outline-none focus:ring-blue-300 text-md rounded-lg px-4 py-2 text-center"

@@ -33,8 +33,7 @@ export default {
 
 
 <template >
-   <AppHeader />
-    
+   <AppHeader /> 
     <HomeView id="home" />
     <ServicesView id="services" />
     <AboutView id="about" />

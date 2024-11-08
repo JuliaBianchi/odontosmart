@@ -11,7 +11,7 @@ import consultorio6 from '@/assets/img/6.jpg'
 import TimePicker from '@/components/TimePicker.vue'
 import ContactView from './ContactView.vue'
 
-import uuid from "vue-uuid";
+
 
 export default {
   name: 'CardDetails',
@@ -32,11 +32,15 @@ export default {
         dia: '',
         horario: '',
       },
+      pedidos: [],
     }
   },
   mounted() {
     const itemId = this.$route.params.id
     this.buscarItem(itemId)
+  },
+  async created() {
+
   },
   methods: {
     updateInputDate(event) {
@@ -45,6 +49,7 @@ export default {
     updateInputTime(event) {
       this.selectedTime = event.target.value
     },
+
     async addToCart() {
       const order = {
         display_name: auth.currentUser.email,
@@ -56,11 +61,11 @@ export default {
       try {
         await ordersCollection.add(order)
         alert('Item adicionado ao carrinho')
+        
       } catch (error) {
         alert('Ops, ocorreu um erro.')
         console.log(error)
       }
-
     },
     buscarItem(id) {
       const itens = [
@@ -138,7 +143,7 @@ export default {
 </script>
 
 <template>
-  <AppHeader />
+  <AppHeader/>
 
   <container
     class="w-full h-screen flex justify-center items-center bg-slate-100 pt-40"
